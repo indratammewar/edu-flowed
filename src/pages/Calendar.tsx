@@ -1,0 +1,108 @@
+import { useState } from "react";
+import { Calendar } from "@/components/ui/calendar";
+import { LMSLayout } from "@/components/LMSLayout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Clock, MapPin } from "lucide-react";
+
+const scheduleData = {
+  "2024-01-15": [
+    { time: "09:00", subject: "Mathematics", location: "Room 101", type: "lecture" },
+    { time: "11:00", subject: "Physics", location: "Lab 205", type: "lab" },
+    { time: "14:00", subject: "Chemistry", location: "Room 103", type: "lecture" }
+  ],
+  "2024-01-16": [
+    { time: "10:00", subject: "English", location: "Room 201", type: "lecture" },
+    { time: "13:00", subject: "Computer Science", location: "Lab 301", type: "lab" }
+  ],
+  "2024-01-17": [
+    { time: "09:00", subject: "Biology", location: "Lab 102", type: "lab" },
+    { time: "15:00", subject: "History", location: "Room 105", type: "lecture" }
+  ]
+};
+
+export default function CalendarPage() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  
+  const formatDateKey = (date: Date) => {
+    return date.toISOString().split('T')[0];
+  };
+
+  const getScheduleForDate = (date: Date | undefined) => {
+    if (!date) return [];
+    const dateKey = formatDateKey(date);
+    return scheduleData[dateKey as keyof typeof scheduleData] || [];
+  };
+
+  const selectedSchedule = getScheduleForDate(selectedDate);
+
+  const getTypeColor = (type: string) => {
+    return type === 'lecture' ? 'bg-primary text-primary-foreground' : 'bg-accent text-accent-foreground';
+  };
+
+  return (
+    <LMSLayout>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Academic Calendar</h1>
+          <p className="text-muted-foreground">
+            View your daily schedule and upcoming classes
+          </p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>Calendar</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={setSelectedDate}
+                className="rounded-md border pointer-events-auto"
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                Schedule for {selectedDate?.toLocaleDateString()}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {selectedSchedule.length === 0 ? (
+                <p className="text-muted-foreground text-center py-8">
+                  No classes scheduled for this date
+                </p>
+              ) : (
+                <div className="space-y-4">
+                  {selectedSchedule.map((item, index) => (
+                    <div key={index} className="flex items-start gap-3 p-3 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors">
+                      <div className="text-sm font-medium text-muted-foreground min-w-[60px]">
+                        {item.time}
+                      </div>
+                      <div className="flex-1 space-y-1">
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-medium text-foreground">{item.subject}</h3>
+                          <Badge className={getTypeColor(item.type)}>
+                            {item.type}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <MapPin className="w-4 h-4" />
+                          {item.location}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </LMSLayout>
+  );
+}

@@ -50,14 +50,14 @@ export function QuickActions() {
             key={index}
             variant="outline"
             onClick={action.action}
-            className="h-auto p-4 flex flex-col items-center gap-2 hover:bg-secondary-hover transition-colors"
+            className="h-auto p-3 flex flex-col items-center gap-2 hover:bg-secondary-hover transition-colors text-center"
           >
-            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${action.color}`}>
-              <action.icon className="w-5 h-5" />
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${action.color} flex-shrink-0`}>
+              <action.icon className="w-4 h-4" />
             </div>
             <div className="text-center">
-              <div className="font-medium text-sm">{action.label}</div>
-              <div className="text-xs text-muted-foreground">
+              <div className="font-medium text-sm leading-tight">{action.label}</div>
+              <div className="text-xs text-muted-foreground leading-tight line-clamp-2">
                 {action.description}
               </div>
             </div>
