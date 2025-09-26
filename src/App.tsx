@@ -9,6 +9,7 @@ import Calendar from "./pages/Calendar";
 import Classes from "./pages/Classes";
 import Assignments from "./pages/Assignments";
 import Attendance from "./pages/Attendance";
+import Notifications from "./pages/Notifications";
 import Messages from "./pages/Messages";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/classes" element={<Classes />} />
             <Route path="/assignments" element={<Assignments />} />
             <Route path="/attendance" element={<Attendance />} />
+            <Route path="/notifications" element={<Notifications />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/settings" element={<Settings />} />
