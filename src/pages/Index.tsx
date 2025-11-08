@@ -5,6 +5,10 @@ import { AttendanceOverview } from "@/components/dashboard/AttendanceOverview";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 import { RecentAnnouncements } from "@/components/dashboard/RecentAnnouncements";
 import { NotificationPopup } from "@/components/NotificationPopup";
+import { RecentItems } from "@/components/RecentItems";
+import { QuickClassJoinButton } from "@/components/QuickClassJoinButton";
+import { KeyboardShortcutsOverlay } from "@/components/KeyboardShortcutsOverlay";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { Button } from "@/components/ui/button";
 import { Bell, Home } from "lucide-react";
 import {
@@ -15,6 +19,7 @@ import {
 } from "@/components/ui/breadcrumb";
 const Index = () => {
   const [showNotifications, setShowNotifications] = useState(false);
+  const { shortcuts, showOverlay, setShowOverlay } = useKeyboardShortcuts();
 
   return (
     <>
@@ -62,6 +67,7 @@ const Index = () => {
           {/* Right Column */}
           <div className="space-y-6">
             <AttendanceOverview />
+            <RecentItems />
             <QuickActions />
           </div>
         </div>
@@ -71,6 +77,12 @@ const Index = () => {
     <NotificationPopup 
       isOpen={showNotifications}
       onClose={() => setShowNotifications(false)}
+    />
+    <QuickClassJoinButton />
+    <KeyboardShortcutsOverlay
+      open={showOverlay}
+      onOpenChange={setShowOverlay}
+      shortcuts={shortcuts}
     />
     </>
   );

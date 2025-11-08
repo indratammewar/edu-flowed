@@ -6,6 +6,8 @@ type ThemeProviderContextType = {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
+  readingMode: boolean;
+  toggleReadingMode: () => void;
 };
 
 const ThemeProviderContext = createContext<ThemeProviderContextType | undefined>(
@@ -35,13 +37,23 @@ export function ThemeProvider({
   const [theme, setTheme] = useState<Theme>(
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
   );
+  
+  const [readingMode, setReadingMode] = useState<boolean>(
+    () => localStorage.getItem("eduflow-reading-mode") === "true"
+  );
 
   useEffect(() => {
     const root = window.document.documentElement;
 
     root.classList.remove("light", "dark");
     root.classList.add(theme);
-  }, [theme]);
+    
+    if (readingMode) {
+      root.classList.add("reading-mode");
+    } else {
+      root.classList.remove("reading-mode");
+    }
+  }, [theme, readingMode]);
 
   const value = {
     theme,
@@ -53,6 +65,12 @@ export function ThemeProvider({
       const newTheme = theme === "light" ? "dark" : "light";
       localStorage.setItem(storageKey, newTheme);
       setTheme(newTheme);
+    },
+    readingMode,
+    toggleReadingMode: () => {
+      const newReadingMode = !readingMode;
+      localStorage.setItem("eduflow-reading-mode", String(newReadingMode));
+      setReadingMode(newReadingMode);
     },
   };
 

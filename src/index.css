@@ -90,10 +90,14 @@ All colors MUST be HSL for consistency.
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
+    /* Reading Mode (Warmer colors for extended reading) */
+    --reading-background: 42 20% 96%;
+    --reading-foreground: 42 20% 15%;
+    --reading-card: 42 15% 98%;
   }
 
   .dark {
-    /* Base Colors - Dark theme */
+    /* Base Colors - Dark theme with enhanced contrast for WCAG AAA */
     --background: 222 84% 5%;
     --foreground: 210 40% 98%;
 
@@ -166,6 +170,18 @@ All colors MUST be HSL for consistency.
     --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.3), 0 2px 4px -1px hsl(0 0% 0% / 0.2);
     --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.3), 0 4px 6px -2px hsl(0 0% 0% / 0.2);
     --shadow-card: 0 1px 3px 0 hsl(0 0% 0% / 0.4), 0 1px 2px 0 hsl(0 0% 0% / 0.3);
+
+    /* Reading Mode in Dark (Warmer, less harsh) */
+    --reading-background: 30 15% 12%;
+    --reading-foreground: 30 15% 92%;
+    --reading-card: 30 12% 15%;
+  }
+
+  .reading-mode {
+    --background: var(--reading-background);
+    --foreground: var(--reading-foreground);
+    --card: var(--reading-card);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
