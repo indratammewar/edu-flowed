@@ -6,7 +6,13 @@ import { QuickActions } from "@/components/dashboard/QuickActions";
 import { RecentAnnouncements } from "@/components/dashboard/RecentAnnouncements";
 import { NotificationPopup } from "@/components/NotificationPopup";
 import { Button } from "@/components/ui/button";
-import { Bell } from "lucide-react";
+import { Bell, Home } from "lucide-react";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb";
 const Index = () => {
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -14,6 +20,18 @@ const Index = () => {
     <>
       <LMSLayout>
       <div className="space-y-6">
+        {/* Breadcrumb */}
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbPage className="flex items-center gap-1">
+                <Home className="h-4 w-4" />
+                Dashboard
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+
         {/* Welcome Section */}
         <div className="mb-8 flex items-center justify-between">
           <div>
