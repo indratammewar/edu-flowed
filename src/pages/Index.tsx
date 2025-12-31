@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LMSLayout } from "@/components/LMSLayout";
-import { TodayClasses } from "@/components/dashboard/TodayClasses";
-import { AttendanceAlerts } from "@/components/dashboard/AttendanceAlerts";
-import { AssignmentAlerts } from "@/components/dashboard/AssignmentAlerts";
-import { AttendanceSummary } from "@/components/dashboard/AttendanceSummary";
-import { QuickActions } from "@/components/dashboard/QuickActions";
+import { DashboardPrimaryAction } from "@/components/dashboard/PrimaryAction";
+import { RiskAlerts } from "@/components/dashboard/RiskAlerts";
+import { TodaySchedule } from "@/components/dashboard/TodaySchedule";
+import { QuickStats } from "@/components/dashboard/QuickStats";
 import { NotificationPopup } from "@/components/NotificationPopup";
 import { QuickClassJoinButton } from "@/components/QuickClassJoinButton";
 import { KeyboardShortcutsOverlay } from "@/components/KeyboardShortcutsOverlay";
@@ -27,6 +26,7 @@ const Index = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<{ full_name: string | null }>({ full_name: null });
+  const [notificationCount] = useState(2);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -58,33 +58,29 @@ const Index = () => {
   if (!user) return null;
 
   const firstName = profile.full_name?.split(' ')[0] || 'Student';
+  const currentDate = new Date().toLocaleDateString('en-US', { 
+    weekday: 'long', 
+    month: 'long', 
+    day: 'numeric' 
+  });
 
   return (
     <>
       <LMSLayout>
-        <div className="space-y-6">
-          {/* Breadcrumb */}
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbPage className="flex items-center gap-1.5 text-muted-foreground">
-                  <Home className="h-4 w-4" />
-                  Dashboard
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-
-          {/* Welcome Section */}
+        <div className="space-y-5">
+          {/* Header Row */}
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-foreground">
-                Good {getGreeting()}, {firstName}! 👋
-              </h1>
-              <p className="text-muted-foreground mt-1">
-                Here's your academic overview for today.
-              </p>
-            </div>
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbPage className="flex items-center gap-1.5 text-muted-foreground">
+                    <Home className="h-4 w-4" />
+                    Dashboard
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+            
             <Button
               variant="outline"
               size="icon"
@@ -92,29 +88,35 @@ const Index = () => {
               className="relative shrink-0"
             >
               <Bell className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-destructive rounded-full"></span>
+              {notificationCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-destructive rounded-full text-[10px] font-medium text-destructive-foreground flex items-center justify-center">
+                  {notificationCount}
+                </span>
+              )}
             </Button>
           </div>
 
-          {/* Alerts Row */}
-          <div className="grid gap-4 md:grid-cols-2">
-            <AttendanceAlerts />
-            <AssignmentAlerts />
+          {/* Contextual Header - No generic greeting */}
+          <div>
+            <h1 className="text-xl md:text-2xl font-semibold text-foreground">
+              {firstName}, here's what needs your attention
+            </h1>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              {currentDate}
+            </p>
           </div>
 
-          {/* Main Dashboard Grid */}
-          <div className="grid gap-6 lg:grid-cols-3">
-            {/* Left Column - Today's Classes */}
-            <div className="lg:col-span-2 space-y-6">
-              <TodayClasses />
-            </div>
+          {/* Primary Action - Most urgent thing to do */}
+          <DashboardPrimaryAction />
 
-            {/* Right Column */}
-            <div className="space-y-6">
-              <AttendanceSummary />
-              <QuickActions />
-            </div>
-          </div>
+          {/* Quick Stats Row */}
+          <QuickStats />
+
+          {/* Risk Alerts - Critical and Warning items */}
+          <RiskAlerts />
+
+          {/* Today's Schedule with attendance context */}
+          <TodaySchedule />
         </div>
       </LMSLayout>
       
@@ -131,12 +133,5 @@ const Index = () => {
     </>
   );
 };
-
-function getGreeting() {
-  const hour = new Date().getHours();
-  if (hour < 12) return 'Morning';
-  if (hour < 17) return 'Afternoon';
-  return 'Evening';
-}
 
 export default Index;
