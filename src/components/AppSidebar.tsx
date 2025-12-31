@@ -1,13 +1,11 @@
 import { 
   Home, 
   Calendar, 
-  Users, 
-  ClipboardList, 
+  BookOpen,
   MessageSquare, 
   BarChart3, 
   Settings,
-  BookOpen,
-  Bell
+  User
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
@@ -25,19 +23,17 @@ import {
 
 const mainItems = [
   { title: "Dashboard", url: "/", icon: Home },
+  { title: "Courses", url: "/courses", icon: BookOpen },
   { title: "Calendar", url: "/calendar", icon: Calendar },
-  { title: "Classes", url: "/classes", icon: BookOpen },
-  { title: "Assignments", url: "/assignments", icon: ClipboardList },
-  { title: "Attendance", url: "/attendance", icon: Users },
 ];
 
 const communicationItems = [
-  { title: "Notifications", url: "/notifications", icon: Bell },
   { title: "Messages", url: "/messages", icon: MessageSquare },
 ];
 
-const analyticsItems = [
+const toolItems = [
   { title: "Analytics", url: "/analytics", icon: BarChart3 },
+  { title: "Profile", url: "/profile", icon: User },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 
@@ -59,18 +55,18 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar className={`${collapsed ? "w-16" : "w-64"} bg-sidebar border-sidebar-border`}>
+    <Sidebar className={`${collapsed ? "w-16" : "w-64"} bg-sidebar border-sidebar-border hidden md:flex`}>
       <SidebarContent className="p-4 bg-sidebar">
         {/* Logo */}
         <div className="mb-8">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-hero flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-sm">
               <BookOpen className="w-5 h-5 text-white" />
             </div>
             {!collapsed && (
               <div>
-                <h1 className="font-semibold text-lg text-sidebar-foreground">EduFlow</h1>
-                <p className="text-xs text-sidebar-foreground/70">Learning Platform</p>
+                <h1 className="font-bold text-xl text-sidebar-foreground">EduFlow</h1>
+                <p className="text-xs text-sidebar-foreground/60">Academic Portal</p>
               </div>
             )}
           </div>
@@ -78,7 +74,7 @@ export function AppSidebar() {
 
         {/* Main Navigation */}
         <SidebarGroup>
-          <SidebarGroupLabel className={`${collapsed ? "sr-only" : ""} text-sidebar-foreground/70`}>
+          <SidebarGroupLabel className={`${collapsed ? "sr-only" : ""} text-sidebar-foreground/60 text-xs uppercase tracking-wider`}>
             Main
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -86,7 +82,7 @@ export function AppSidebar() {
               {mainItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink to={item.url} className={getNavClasses(item.url)}>
+                    <NavLink to={item.url} className={`${getNavClasses(item.url)} rounded-lg`}>
                       <item.icon className="h-5 w-5" />
                       {!collapsed && <span>{item.title}</span>}
                     </NavLink>
@@ -99,15 +95,15 @@ export function AppSidebar() {
 
         {/* Communication */}
         <SidebarGroup>
-          <SidebarGroupLabel className={`${collapsed ? "sr-only" : ""} text-sidebar-foreground/70`}>
-            Communication
+          <SidebarGroupLabel className={`${collapsed ? "sr-only" : ""} text-sidebar-foreground/60 text-xs uppercase tracking-wider`}>
+            Connect
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {communicationItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink to={item.url} className={getNavClasses(item.url)}>
+                    <NavLink to={item.url} className={`${getNavClasses(item.url)} rounded-lg`}>
                       <item.icon className="h-5 w-5" />
                       {!collapsed && <span>{item.title}</span>}
                     </NavLink>
@@ -118,17 +114,17 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Analytics & Settings */}
+        {/* Tools */}
         <SidebarGroup>
-          <SidebarGroupLabel className={`${collapsed ? "sr-only" : ""} text-sidebar-foreground/70`}>
+          <SidebarGroupLabel className={`${collapsed ? "sr-only" : ""} text-sidebar-foreground/60 text-xs uppercase tracking-wider`}>
             Tools
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {analyticsItems.map((item) => (
+              {toolItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink to={item.url} className={getNavClasses(item.url)}>
+                    <NavLink to={item.url} className={`${getNavClasses(item.url)} rounded-lg`}>
                       <item.icon className="h-5 w-5" />
                       {!collapsed && <span>{item.title}</span>}
                     </NavLink>
