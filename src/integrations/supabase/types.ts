@@ -23,7 +23,9 @@ export type Database = {
           full_name: string | null
           id: string
           phone: string | null
+          roll_number: string | null
           updated_at: string | null
+          username: string | null
           year: number | null
         }
         Insert: {
@@ -34,7 +36,9 @@ export type Database = {
           full_name?: string | null
           id: string
           phone?: string | null
+          roll_number?: string | null
           updated_at?: string | null
+          username?: string | null
           year?: number | null
         }
         Update: {
@@ -45,7 +49,9 @@ export type Database = {
           full_name?: string | null
           id?: string
           phone?: string | null
+          roll_number?: string | null
           updated_at?: string | null
+          username?: string | null
           year?: number | null
         }
         Relationships: []

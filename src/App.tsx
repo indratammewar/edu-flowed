@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import Calendar from "./pages/Calendar";
 import Classes from "./pages/Classes";
+import Courses from "./pages/Courses";
 import Assignments from "./pages/Assignments";
 import Attendance from "./pages/Attendance";
 import Notifications from "./pages/Notifications";
@@ -29,18 +30,18 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
+              <Route path="/auth" element={<Auth />} />
               <Route path="/" element={<Index />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/classes" element={<Classes />} />
+              <Route path="/courses" element={<Courses />} />
               <Route path="/assignments" element={<Assignments />} />
               <Route path="/attendance" element={<Attendance />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/messages" element={<Messages />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/auth" element={<Auth />} />
               <Route path="/profile" element={<Profile />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
