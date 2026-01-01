@@ -1,12 +1,12 @@
-import { Home, BookOpen, BarChart3, MessageSquare, User } from "lucide-react";
+import { Home, BookOpen, BarChart3, MessageSquare, Radio } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
 const navItems = [
   { title: "Home", url: "/", icon: Home },
   { title: "Courses", url: "/courses", icon: BookOpen },
-  { title: "Analytics", url: "/analytics", icon: BarChart3 },
   { title: "Messages", url: "/messages", icon: MessageSquare },
-  { title: "Profile", url: "/profile", icon: User },
+  { title: "Channels", url: "/channels", icon: Radio },
+  { title: "Analytics", url: "/analytics", icon: BarChart3 },
 ];
 
 export function MobileNav() {

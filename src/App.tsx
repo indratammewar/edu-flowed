@@ -13,6 +13,7 @@ import Assignments from "./pages/Assignments";
 import Attendance from "./pages/Attendance";
 import Notifications from "./pages/Notifications";
 import Messages from "./pages/Messages";
+import Channels from "./pages/Channels";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import Auth from "./pages/Auth";
@@ -39,6 +40,7 @@ const App = () => (
               <Route path="/attendance" element={<Attendance />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/messages" element={<Messages />} />
+              <Route path="/channels" element={<Channels />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/profile" element={<Profile />} />

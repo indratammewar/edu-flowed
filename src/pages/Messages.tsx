@@ -1,291 +1,174 @@
 import { useState } from "react";
 import { LMSLayout } from "@/components/LMSLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Send, Search, User, MessageCircle, Clock, Home, Mail } from "lucide-react";
-import { Link } from "react-router-dom";
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
+import { ConversationList } from "@/components/messages/ConversationList";
+import { ChatView } from "@/components/messages/ChatView";
+import { useTheme } from "@/components/ThemeProvider";
 
-const facultyMembers = [
+// Mock data for conversations
+const mockConversations = [
   {
-    id: 1,
+    id: "1",
     name: "Dr. Sarah Johnson",
-    subject: "Mathematics",
-    email: "sarah.johnson@university.edu",
-    status: "online",
-    lastSeen: "now"
+    avatar: "",
+    lastMessage: "Your assignment looks great!",
+    timestamp: "10:30",
+    unreadCount: 2,
+    online: true,
+    role: "faculty" as const,
   },
   {
-    id: 2,
+    id: "2",
     name: "Prof. Michael Chen",
-    subject: "Physics",
-    email: "michael.chen@university.edu", 
-    status: "offline",
-    lastSeen: "2 hours ago"
+    avatar: "",
+    lastMessage: "Please submit by Friday",
+    timestamp: "09:15",
+    unreadCount: 0,
+    online: false,
+    role: "faculty" as const,
   },
   {
-    id: 3,
+    id: "3",
     name: "Dr. Emily Rodriguez",
-    subject: "Chemistry",
-    email: "emily.rodriguez@university.edu",
-    status: "online",
-    lastSeen: "5 minutes ago"
+    avatar: "",
+    lastMessage: "Lab session rescheduled to Room 205",
+    timestamp: "Yesterday",
+    unreadCount: 1,
+    online: true,
+    role: "faculty" as const,
   },
   {
-    id: 4,
+    id: "4",
     name: "Prof. David Williams",
-    subject: "English",
-    email: "david.williams@university.edu",
-    status: "offline",
-    lastSeen: "1 day ago"
+    avatar: "",
+    lastMessage: "See you in class tomorrow",
+    timestamp: "Yesterday",
+    unreadCount: 0,
+    online: false,
+    role: "faculty" as const,
   },
   {
-    id: 5,
+    id: "5",
     name: "Dr. Lisa Thompson",
-    subject: "Computer Science",
-    email: "lisa.thompson@university.edu",
-    status: "online",
-    lastSeen: "now"
-  }
+    avatar: "",
+    lastMessage: "Great progress on your project!",
+    timestamp: "Mon",
+    unreadCount: 0,
+    online: true,
+    role: "faculty" as const,
+  },
+  {
+    id: "6",
+    name: "Rahul Sharma",
+    avatar: "",
+    lastMessage: "Did you complete the notes?",
+    timestamp: "Mon",
+    unreadCount: 3,
+    online: true,
+    role: "student" as const,
+  },
+  {
+    id: "7",
+    name: "Priya Patel",
+    avatar: "",
+    lastMessage: "Thanks for the help!",
+    timestamp: "Sun",
+    unreadCount: 0,
+    online: false,
+    role: "student" as const,
+  },
 ];
 
-const recentMessages = [
-  {
-    id: 1,
-    facultyId: 1,
-    facultyName: "Dr. Sarah Johnson",
-    subject: "Mathematics",
-    message: "Your recent assignment submission looks great! Just a small correction needed in problem 7.",
-    timestamp: "2 hours ago",
-    unread: true
-  },
-  {
-    id: 2,
-    facultyId: 3,
-    facultyName: "Dr. Emily Rodriguez", 
-    subject: "Chemistry",
-    message: "Lab session tomorrow has been moved to Room 205. Please come prepared with safety goggles.",
-    timestamp: "5 hours ago",
-    unread: false
-  },
-  {
-    id: 3,
-    facultyId: 5,
-    facultyName: "Dr. Lisa Thompson",
-    subject: "Computer Science", 
-    message: "Great progress on your project! Let's schedule a meeting to discuss the final phase.",
-    timestamp: "1 day ago",
-    unread: false
-  }
-];
+// Mock messages for each conversation
+const mockMessages: Record<string, Array<{
+  id: string;
+  content: string;
+  timestamp: string;
+  sender: "me" | "them";
+  status: "sent" | "delivered" | "read";
+}>> = {
+  "1": [
+    { id: "1", content: "Hello Dr. Johnson, I have a question about the assignment.", timestamp: "09:30", sender: "me", status: "read" },
+    { id: "2", content: "Of course! What would you like to know?", timestamp: "09:32", sender: "them", status: "read" },
+    { id: "3", content: "I'm confused about problem 5. Could you explain the approach?", timestamp: "09:35", sender: "me", status: "read" },
+    { id: "4", content: "Sure! For problem 5, you need to apply the chain rule first, then simplify.", timestamp: "09:40", sender: "them", status: "read" },
+    { id: "5", content: "Let me know if you need more help.", timestamp: "09:41", sender: "them", status: "read" },
+    { id: "6", content: "Thank you! That makes sense now.", timestamp: "10:00", sender: "me", status: "read" },
+    { id: "7", content: "Your assignment looks great!", timestamp: "10:30", sender: "them", status: "read" },
+  ],
+  "2": [
+    { id: "1", content: "Good morning Professor Chen!", timestamp: "08:00", sender: "me", status: "read" },
+    { id: "2", content: "Good morning! How can I help?", timestamp: "08:15", sender: "them", status: "read" },
+    { id: "3", content: "When is the physics lab report due?", timestamp: "08:20", sender: "me", status: "read" },
+    { id: "4", content: "Please submit by Friday", timestamp: "09:15", sender: "them", status: "read" },
+  ],
+  "3": [
+    { id: "1", content: "Lab session rescheduled to Room 205", timestamp: "14:00", sender: "them", status: "read" },
+  ],
+  "6": [
+    { id: "1", content: "Hey, are you coming to the study session?", timestamp: "18:00", sender: "them", status: "read" },
+    { id: "2", content: "Yes, I'll be there at 6!", timestamp: "18:05", sender: "me", status: "read" },
+    { id: "3", content: "Did you complete the notes?", timestamp: "19:00", sender: "them", status: "delivered" },
+  ],
+};
 
 export default function MessagesPage() {
-  const [selectedFaculty, setSelectedFaculty] = useState<number | null>(null);
-  const [messageText, setMessageText] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
+  const [messages, setMessages] = useState(mockMessages);
+  const { readingMode } = useTheme();
 
-  const filteredFaculty = facultyMembers.filter(faculty =>
-    faculty.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    faculty.subject.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const selectedContact = selectedConversation
+    ? mockConversations.find((c) => c.id === selectedConversation)
+    : null;
 
-  const handleSendMessage = () => {
-    if (!selectedFaculty || !messageText.trim()) return;
-    
-    // Here you would typically send the message to your backend
-    console.log("Sending message to faculty ID:", selectedFaculty, "Message:", messageText);
-    setMessageText("");
-    // Show success toast
+  const handleSendMessage = (content: string) => {
+    if (!selectedConversation) return;
+
+    const newMessage = {
+      id: Date.now().toString(),
+      content,
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      sender: "me" as const,
+      status: "sent" as const,
+    };
+
+    setMessages((prev) => ({
+      ...prev,
+      [selectedConversation]: [...(prev[selectedConversation] || []), newMessage],
+    }));
+
+    // Update last message in conversation list
+    // In real app, this would sync with backend
   };
 
-  const getStatusColor = (status: string) => {
-    return status === 'online' ? 'bg-green-500' : 'bg-gray-400';
+  const handleBack = () => {
+    setSelectedConversation(null);
   };
 
   return (
-    <LMSLayout>
-      <div className="space-y-6">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/" className="flex items-center gap-1">
-                  <Home className="h-4 w-4" />
-                  Dashboard
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage className="flex items-center gap-1">
-                <Mail className="h-4 w-4" />
-                Messages
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-
-        <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Messages</h1>
-          <p className="text-muted-foreground">
-            Connect with your faculty members and stay updated
-          </p>
+    <LMSLayout hideHeader hidePadding>
+      <div className={`h-[calc(100vh-4rem)] md:h-screen flex ${readingMode ? "reading-mode-content" : ""}`}>
+        {/* Conversation List - Hidden on mobile when chat is open */}
+        <div className={`w-full md:w-80 lg:w-96 shrink-0 ${selectedConversation ? "hidden md:flex" : "flex"} flex-col`}>
+          <ConversationList
+            conversations={mockConversations}
+            selectedId={selectedConversation}
+            onSelect={setSelectedConversation}
+          />
         </div>
 
-        <Tabs defaultValue="compose" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="compose">Compose Message</TabsTrigger>
-            <TabsTrigger value="recent">Recent Messages ({recentMessages.filter(m => m.unread).length})</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="compose" className="space-y-6">
-            <div className="grid gap-6 lg:grid-cols-2">
-              {/* Faculty Directory */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="w-5 h-5" />
-                    Faculty Directory
-                  </CardTitle>
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                    <Input
-                      placeholder="Search faculty..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {filteredFaculty.map((faculty) => (
-                    <div
-                      key={faculty.id}
-                      className={`p-3 rounded-lg border cursor-pointer transition-colors ${
-                        selectedFaculty === faculty.id 
-                          ? 'bg-primary/10 border-primary' 
-                          : 'hover:bg-secondary/50'
-                      }`}
-                      onClick={() => setSelectedFaculty(faculty.id)}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Avatar>
-                          <AvatarFallback>{faculty.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <h3 className="font-medium text-foreground">{faculty.name}</h3>
-                            <div className={`w-2 h-2 rounded-full ${getStatusColor(faculty.status)}`} />
-                          </div>
-                          <p className="text-sm text-muted-foreground">{faculty.subject}</p>
-                          <p className="text-xs text-muted-foreground">Last seen: {faculty.lastSeen}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              {/* Message Composer */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <MessageCircle className="w-5 h-5" />
-                    Compose Message
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {selectedFaculty ? (
-                    <>
-                      <div className="p-3 bg-secondary/50 rounded-lg">
-                        <p className="text-sm text-muted-foreground">Sending to:</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Avatar className="w-8 h-8">
-                            <AvatarFallback>
-                              {facultyMembers.find(f => f.id === selectedFaculty)?.name.split(' ').map(n => n[0]).join('')}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="font-medium text-foreground">
-                              {facultyMembers.find(f => f.id === selectedFaculty)?.name}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              {facultyMembers.find(f => f.id === selectedFaculty)?.subject}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <Textarea
-                        placeholder="Type your message here..."
-                        value={messageText}
-                        onChange={(e) => setMessageText(e.target.value)}
-                        rows={6}
-                        className="resize-none"
-                      />
-
-                      <Button 
-                        onClick={handleSendMessage}
-                        disabled={!messageText.trim()}
-                        className="w-full"
-                      >
-                        <Send className="w-4 h-4 mr-2" />
-                        Send Message
-                      </Button>
-                    </>
-                  ) : (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <MessageCircle className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                      <p>Select a faculty member to start messaging</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="recent" className="space-y-4">
-            {recentMessages.map((message) => (
-              <Card key={message.id} className={`${message.unread ? 'border-primary' : ''}`}>
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-3">
-                    <Avatar>
-                      <AvatarFallback>
-                        {message.facultyName.split(' ').map(n => n[0]).join('')}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-medium text-foreground">{message.facultyName}</h3>
-                          {message.unread && <Badge variant="destructive" className="text-xs">New</Badge>}
-                        </div>
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <Clock className="w-3 h-3" />
-                          {message.timestamp}
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-2">{message.subject}</p>
-                      <p className="text-sm text-foreground">{message.message}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </TabsContent>
-        </Tabs>
+        {/* Chat View - Full screen on mobile when open */}
+        <div className={`flex-1 ${!selectedConversation ? "hidden md:flex" : "flex"}`}>
+          <ChatView
+            contact={selectedContact ? {
+              ...selectedContact,
+              lastSeen: selectedContact.online ? undefined : "today at 9:30 AM",
+            } : null}
+            messages={selectedConversation ? messages[selectedConversation] || [] : []}
+            onSendMessage={handleSendMessage}
+            onBack={handleBack}
+            showBackButton={true}
+          />
+        </div>
       </div>
     </LMSLayout>
   );

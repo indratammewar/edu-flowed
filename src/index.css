@@ -183,6 +183,17 @@ All colors MUST be HSL for consistency.
     --card: var(--reading-card);
     transition: background-color 0.3s ease, color 0.3s ease;
   }
+
+  .reading-mode .reading-mode-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    letter-spacing: 0.01em;
+  }
+
+  .reading-mode .reading-mode-content p,
+  .reading-mode .reading-mode-content span {
+    line-height: 1.9;
+  }
 }
 
 @layer base {
