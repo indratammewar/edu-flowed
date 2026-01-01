@@ -14,21 +14,38 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 
-const scheduleData = {
-  "2024-01-15": [
-    { time: "09:00", subject: "Mathematics", location: "Room 101", type: "lecture" },
-    { time: "11:00", subject: "Physics", location: "Lab 205", type: "lab" },
-    { time: "14:00", subject: "Chemistry", location: "Room 103", type: "lecture" }
-  ],
-  "2024-01-16": [
-    { time: "10:00", subject: "English", location: "Room 201", type: "lecture" },
-    { time: "13:00", subject: "Computer Science", location: "Lab 301", type: "lab" }
-  ],
-  "2024-01-17": [
-    { time: "09:00", subject: "Biology", location: "Lab 102", type: "lab" },
-    { time: "15:00", subject: "History", location: "Room 105", type: "lecture" }
-  ]
+// Generate schedule data dynamically based on today's date
+const getScheduleData = () => {
+  const today = new Date();
+  const formatDate = (date: Date) => date.toISOString().split('T')[0];
+  
+  const todayKey = formatDate(today);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowKey = formatDate(tomorrow);
+  const dayAfter = new Date(today);
+  dayAfter.setDate(dayAfter.getDate() + 2);
+  const dayAfterKey = formatDate(dayAfter);
+
+  return {
+    [todayKey]: [
+      { time: "09:00", subject: "Mathematics", location: "Room 101", type: "lecture" },
+      { time: "11:00", subject: "Physics", location: "Lab 205", type: "lab" },
+      { time: "14:00", subject: "Chemistry", location: "Room 103", type: "lecture" },
+      { time: "16:00", subject: "Computer Science", location: "Lab 301", type: "lab" }
+    ],
+    [tomorrowKey]: [
+      { time: "10:00", subject: "English", location: "Room 201", type: "lecture" },
+      { time: "13:00", subject: "Computer Science", location: "Lab 301", type: "lab" }
+    ],
+    [dayAfterKey]: [
+      { time: "09:00", subject: "Biology", location: "Lab 102", type: "lab" },
+      { time: "15:00", subject: "History", location: "Room 105", type: "lecture" }
+    ]
+  };
 };
+
+const scheduleData = getScheduleData();
 
 export default function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
