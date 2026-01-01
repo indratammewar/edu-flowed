@@ -5,7 +5,8 @@ import {
   MessageSquare, 
   BarChart3, 
   Settings,
-  User
+  User,
+  Radio
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
@@ -29,6 +30,7 @@ const mainItems = [
 
 const communicationItems = [
   { title: "Messages", url: "/messages", icon: MessageSquare },
+  { title: "Channels", url: "/channels", icon: Radio },
 ];
 
 const toolItems = [
