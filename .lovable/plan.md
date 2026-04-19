@@ -1,49 +1,33 @@
 
-User wants AI image-to-text analysis with a fixed prompt. Use Lovable AI Gateway with google/gemini-2.5-flash (supports vision). No API key needed.
+The AI Image Analyzer feature is already fully implemented in the project. Here's what exists:
 
-Plan:
+## Already Built
 
-## Add AI Image Analyzer
+**Edge function** `supabase/functions/analyze-image/index.ts`
+- Accepts base64 image, calls Lovable AI Gateway with `google/gemini-2.5-flash` (vision)
+- Fixed system prompt for OCR + step-by-step explanation + markdown formatting
+- Handles 429 (rate limit) and 402 (credits) errors
 
-**What it does**: User uploads an image containing text → fixed prompt sent with image to AI → result displayed.
+**Page** `src/pages/AIAssistant.tsx`
+- Upload image (max 10MB), preview, "Analyze" button
+- Markdown-rendered result, loading states, error toasts
 
-**Use case examples** (pick one or customize):
-- Extract text from notes/handwriting
-- Summarize textbook page
-- Solve math problem from photo
-- Explain diagram
+**Navigation**
+- Route `/ai-assistant` registered in `src/App.tsx`
+- Sidebar entry (Sparkles icon) in `AppSidebar.tsx`
+- Mobile nav entry in `MobileNav.tsx`
 
-### Implementation
+## How To Use It Right Now
+1. Open the app and click **AI Assistant** (Sparkles icon) in the sidebar or bottom mobile nav
+2. Click the upload area, pick an image with text/notes/a problem
+3. Click **Analyze** — get a markdown result with extracted text + step-by-step explanation
 
-1. **Edge function** `supabase/functions/analyze-image/index.ts`
-   - Accepts `{ imageBase64 }` from client
-   - Calls Lovable AI Gateway (`google/gemini-2.5-flash`) with fixed system prompt + image
-   - Returns AI response
-   - Handles 429/402 errors
-   - Uses pre-configured `LOVABLE_API_KEY` (no setup needed)
+No API key setup needed — it uses the pre-configured Lovable AI key.
 
-2. **New page** `src/pages/AIAssistant.tsx`
-   - File input (accept images)
-   - Convert to base64, preview thumbnail
-   - "Analyze" button → invokes edge function
-   - Loading state + result card with markdown rendering
-   - Toast on errors
+## Optional Next Steps (pick if you want)
+- **Preset prompts**: Add a dropdown — OCR only / Summarize / Solve problem / Translate
+- **History**: Save past analyses to the database so students can revisit them
+- **Custom prompt**: Let the user type their own question alongside the image
+- **Multi-image**: Allow uploading 2–3 images at once (e.g., multi-page problems)
 
-3. **Routing & nav**
-   - Add `/ai-assistant` route in `src/App.tsx`
-   - Add sidebar item in `AppSidebar.tsx` (Sparkles icon, "AI Assistant")
-   - Add to `MobileNav.tsx`
-
-4. **Fixed prompt** (default — confirm/edit after):
-   > "Extract all text from this image. If it contains a question or problem, provide a clear step-by-step explanation. Format the response in markdown."
-
-### Tech notes
-- No DB changes needed (results are ephemeral). Can add history table later if wanted.
-- Free with Lovable AI included credits.
-- Image sent as base64 data URL inline to gateway (no storage bucket needed for one-shot use).
-
-### Optional add-ons (ask later)
-- Save analysis history to DB
-- Multiple preset prompts (OCR, summarize, solve, translate)
-- Upload to storage bucket for reuse
-
+If you want one of these added, tell me which.
