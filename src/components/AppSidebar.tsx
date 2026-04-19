@@ -6,7 +6,8 @@ import {
   BarChart3, 
   Settings,
   User,
-  Radio
+  Radio,
+  Sparkles
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
@@ -34,6 +35,7 @@ const communicationItems = [
 ];
 
 const toolItems = [
+  { title: "AI Assistant", url: "/ai-assistant", icon: Sparkles },
   { title: "Analytics", url: "/analytics", icon: BarChart3 },
   { title: "Profile", url: "/profile", icon: User },
   { title: "Settings", url: "/settings", icon: Settings },
