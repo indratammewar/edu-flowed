@@ -1,73 +1,108 @@
-# Welcome to your Lovable project
+# EduFlow(STUDENT  MANAGER)
 
-## Project info
+Design a modern Learning Management System (LMS) platform inspired by the clean, minimal style of Google Calendar and the modular flexibility of Notion. The platform should feel lightweight, intuitive, and visually calming, with a strong focus on clarity, accessibility, and productivity for students, faculty, and administrators.
 
-**URL**: https://lovable.dev/projects/fd3808a7-19c1-4f88-9162-622812d88700
+Core Design Principles:
 
-## How can I edit this code?
+Clean and modular layout: grid-based design, ample whitespace, and subtle color palettes for focus.
 
-There are several ways of editing your application.
+User-friendly navigation: sidebar or top bar with quick access to core features (Dashboard, Classes, Assignments, Calendar, Attendance, Communication Hub).
 
-**Use Lovable**
+Cross-platform adaptability: mobile, tablet, and desktop with responsive design.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/fd3808a7-19c1-4f88-9162-622812d88700) and start prompting.
+Smart notifications: elegant, non-intrusive alerts (banners, badges, reminders) with contextual relevance.
 
-Changes made via Lovable will be committed automatically to this repo.
 
-**Use your preferred IDE**
+Key Features to Design:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1. Dashboard (Home Screen)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Personalized overview: upcoming classes, deadlines, attendance status, and recent announcements.
 
-Follow these steps:
+Smart reminder cards with color-coded urgency (like events in Google Calendar).
+
+Quick-action buttons: “Join Class,” “Check Attendance,” “View Notices.”
+
+
+
+2. Calendar Integration
+
+Google Calendar–like view (day/week/month toggle).
+
+Drag-and-drop scheduling for assignments, exams, and events.
+
+Automatic sync with course updates and room changes.
+
+
+
+3. Attendance & Analytics
+
+Simple, visual attendance tracking (progress circles, graphs).
+
+Alerts for low attendance with motivational gamified elements (badges, streak counters).
+
+Faculty view: aggregated insights by class.
+
+
+
+4. Unified Communication Hub
+
+Centralized notice board with read receipts.
+
+Integrated meeting links (Zoom, MS Teams, WhatsApp) accessible in one click.
+
+Two-way communication channels (chat, feedback options).
+
+
+
+5. Smart Notifications & Alerts
+
+Context-aware reminders (30 minutes before class change, deadline approaching).
+
+Push notifications synced across devices.
+
+Customizable preferences to avoid alert fatigue.
+
+
+
+6. Accessibility & Inclusivity
+
+Simple icons, clear typography, and high contrast for readability.
+
+Universal usability regardless of technical skill level.
+
+Offline-friendly lightweight performance.
+
+
+
+
+Style & Feel:
+
+Minimalist aesthetic with functional elegance.
+
+Use soft accent colors for event categories (lectures, deadlines, reminders) while keeping the base neutral.
+
+Smooth micro-interactions (hover states, subtle animations) for a modern touch.
+
+Design should reduce cognitive load and create calm focus, especially during stressful exam periods.
+
+This project was built with [Lovable](https://lovable.dev).
+
+## Build with Lovable
+
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/198b8db2-b1c1-4282-8d01-65d649a06a9a).
+
+- **Ship faster**: describe what you want to build and Lovable handles the code.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+
+## Development
+
+Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
+git clone <this-repository-url>
+cd <repository-name>
 npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/fd3808a7-19c1-4f88-9162-622812d88700) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
